@@ -1,11 +1,14 @@
 import React from 'react';
-import spinner from './spinner.gif';
+import { Dimmer, Loader } from "semantic-ui-react";
+import './loader.css';
 
 const Spinner = () => {
     return (
-        <div>
-            <img src={spinner} style={{width: '200px', margin: 'auto', display:'block'}} alt="Loading..." />
-        </div>
+        <div className="Loader">
+             <Dimmer active inverted size="massive">
+                <Loader inverted>Loading</Loader>
+             </Dimmer>
+          </div>
     )
 }
 
