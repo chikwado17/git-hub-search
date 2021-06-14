@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
+import Alert from '../layouts/Alert';
 
-const Search = ({onInputsearch}) => {
+const Search = ({onInputsearch, emptyInput, handleEmptyInput}) => {
 
     const [textInput, setTextInput] = useState('');
-
     const handleUsersInput = (e) => {
         e.preventDefault();
-
-        onInputsearch(textInput);
-        setTextInput('');
+        if(textInput === '') {
+            handleEmptyInput();
+        }else {
+            onInputsearch(textInput);
+            setTextInput('');
+        }
     }
-
-
     return (
         <div className="container mt-5">
+            {emptyInput &&
+            <Alert />}
             <form onSubmit={handleUsersInput} className="form-group my-2 my-lg-0">
                 <input className="form-control mr-sm-2" value={textInput} onChange={(e) => setTextInput(e.target.value)} type="search" placeholder="Search for github users" />
                 <button className="btn btn-primary mt-3 w-100" type="submit">Search</button>
@@ -21,5 +24,4 @@ const Search = ({onInputsearch}) => {
         </div>
     )
 }
-
 export default Search;
