@@ -1,6 +1,7 @@
 import React, { useEffect , useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import ReposList from '../Repos/ReposList';
 import Spinner from '../layouts/Spinner';
 
 const User = () => {
@@ -24,27 +25,22 @@ const User = () => {
     },[login])
 
     useEffect(() => {
-        const getRepos = async (username) => {
+        const getRepos = async (userRepos) => {
             setLoading(true);
-            const repos = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-            setUser(repos.data);
+            const repos = await axios.get(`https://api.github.com/users/${userRepos}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+            setRepos(repos.data);
             setLoading(false);
         }
 
-        getRepos(username);
+        getRepos(login);
 
-    },[]);
-
-
-
-
-
+    },[login]);
 
     return loading ? (
         <Spinner />
         ) : (
         <div className="container mt-5">
-            <Link to='/' className="btn btn-light mr-3 mb-3"> <i class="bi bi-house-door-fill"></i> Go Back Home</Link>
+            <Link to='/' className="btn btn-light mr-3 mb-3"> <i className="bi bi-house-door-fill"></i> Go Back Home</Link>
             
             <div className="card">
                 <div className="card-body">
@@ -106,6 +102,8 @@ const User = () => {
                 </div>
                 </div>
             </div>
+            <h3>Recent Repos</h3>
+            <ReposList repos={repos} />
         </div>
     )
 }
