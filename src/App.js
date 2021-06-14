@@ -3,23 +3,11 @@ import axios from 'axios';
 import Navbar from './components/layouts/Navbar';
 import Users from './components/users/Users';
 import Search from './components/users/Search';
+import Button from './components/layouts/Button';
 
 const App = () => {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        setLoading(true);
-
-        //getting the list of github users using the github search api
-          const getGithubUsers = async () => {
-            const usersData = await axios.get(`https://api.github.com/users?&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-            setUsers(usersData.data);
-          }
-        getGithubUsers();
-        setLoading(false);
-    }, []);
-
+    const [loading, setLoading] = useState(false);
 
     //function to search users on github using the git hub search api
     const onInputsearch = async (items) => {
@@ -29,11 +17,18 @@ const App = () => {
       setLoading(false);
     }
 
+    const handleClearInput = () => {
+      setUsers([]);
+      setLoading(false);
+    }
+
 
     return (
       <div>
         <Navbar/>
           <Search onInputsearch={onInputsearch} />
+          {users.length > 0 &&  
+          <Button handleClearInput={handleClearInput} />}
           <div className="container mt-5">
             <Users loading={loading} users={users} />
           </div>
