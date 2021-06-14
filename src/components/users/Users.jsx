@@ -2,7 +2,7 @@ import React from 'react';
 import UserItem from './UserItem';
 import Spinner from '../layouts/Spinner';
 
-const Users = ({users, loading}) => {
+const Users = ({users, getUser, loading}) => {
 
     return loading ? (
         <Spinner />
@@ -11,7 +11,7 @@ const Users = ({users, loading}) => {
             <div className="row">
                 {users.map(user => (
                     <div key={user.id} className="col-md-6 col-lg-4 col-xl-3">
-                        <UserItem  user={user} />  
+                        <UserItem getUser={getUser} user={user} />  
                     </div>  
                 ))}
             </div>

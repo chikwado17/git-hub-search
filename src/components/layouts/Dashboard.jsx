@@ -5,12 +5,12 @@ import Button from '../layouts/Button';
 import Users from '../users/Users';
 
 const Dashboard = () => {
-
+    
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [ emptyInput, setEmptyInput ] = useState(false);
-
-     //function to search users on github using the git hub search api
+   
+    //function to search users on github using the git hub search api
     const onInputsearch = async (items) => {
         setLoading(true);
         const search = await axios.get(`https://api.github.com/search/users?q=${items}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
@@ -18,7 +18,7 @@ const Dashboard = () => {
         setLoading(false);
     }
 
-        //function to clear users after searched
+    //function to clear users after searched
     const handleClearInput = () => {
         setUsers([]);
         setLoading(false);
