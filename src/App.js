@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Dashboard from './components/layouts/Dashboard';
 import Navbar from './components/layouts/Navbar';
 import About from './components/pages/About';
+import NotFound from './components/pages/NotFound';
 import User from './components/users/User';
 import AlertContextProvider from './context/alert/AlertContext';
 import GithubContextProvider from './context/gitHub/GithubContext';
@@ -19,6 +20,7 @@ const App = () => {
                   <Route exact path="/" component={Dashboard} />
                   <Route exact login path="/about" component={About} />
                   <Route path="/profile/:login" component={User} />
+                  <Route path="*" component={NotFound} />
               </Switch>
             </AlertContextProvider>
           </GithubContextProvider>
