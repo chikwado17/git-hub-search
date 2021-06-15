@@ -1,40 +1,19 @@
-import React, { useEffect , useState } from 'react';
-import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ReposList from '../Repos/ReposList';
 import Spinner from '../layouts/Spinner';
+import { GithubContext } from '../../context/gitHub/GithubContext';
 
-const User = () => {
-    const [user, setUser] = useState({});
-    const [repos, setRepos] = useState([]);
-    const [loading, setLoading] = useState(false);
 
-    const { login } = useParams();
-  
 
+const User = ({ match }) => {
+    const { getUser, user, getRepos, loading } = useContext(GithubContext);
+    
     useEffect(() => {
-        const getUser = async (username) => {
-            setLoading(true);
-            const UserData = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-            setUser(UserData.data);
-            setLoading(false);
-        }
-        getUser(login);
-
-        
-    },[login])
-
-    useEffect(() => {
-        const getRepos = async (userRepos) => {
-            setLoading(true);
-            const repos = await axios.get(`https://api.github.com/users/${userRepos}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-            setRepos(repos.data);
-            setLoading(false);
-        }
-
-        getRepos(login);
-
-    },[login]);
+        getUser(match.params.login);
+        getRepos(match.params.login);
+        //eslint-disable-next-line
+    },[]);
 
     return loading ? (
         <Spinner />
@@ -47,7 +26,7 @@ const User = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-4 text-center">
-                                <img src={user.avatar_url} className="rounded mt-3" alt="nworie chikwado emmanuel react projects" style={{width:'150px'}} />
+                                <img src={user.avatar_url ? user.avatar_url : 'No avatar'} className="rounded mt-3" alt="nworie chikwado emmanuel react projects" style={{width:'150px'}} />
                                 <h1>{user.name}</h1>
                                     Hireable: 
                                     {user.hireable ? (
@@ -103,7 +82,7 @@ const User = () => {
                 </div>
             </div>
             <h3>Recent Repos</h3>
-            <ReposList repos={repos} />
+            <ReposList />
         </div>
     )
 }
